@@ -127,7 +127,7 @@ class Game {
     this.handleResetButton();
 
     Player.getPlayersInfo();
-    player.getCarsAtEnd();
+    player.getJetsAtEnd();
 
     if (allPlayers !== undefined) {
       image(track, 0, -height * 5, width, height * 6);
@@ -142,24 +142,22 @@ class Game {
         //add 1 to the index for every loop
         index = index + 1;
 
-        //use data form the database to display the cars in x and y direction
+        //use data form the database to display the jets in x and y direction
         var x = allPlayers[plr].positionX;
         var y = height - allPlayers[plr].positionY;
 
-       cars[index - 1].position.x = x;
-       cars[index - 1].position.y = y;
+       jets[index - 1].position.x = x;
+       jets[index - 1].position.y = y;
 
         if (index === player.index) {
-          stroke(10);
-          fill("red");
-          ellipse(x, y, 60, 60);
+          
 
           this.handleFuel(index);
           this.handlePowerCoins(index);
           this.handleObstacleCollision(index);
 
           // Changing camera position in y direction
-          camera.position.y = cars[index - 1].position.y;
+          camera.position.y = jets[index - 1].position.y;
         }
       }
 
@@ -177,7 +175,7 @@ class Game {
       if (player.positionY > finshLine) {
         gameState = 2;
         player.rank += 1;
-        Player.updateCarsAtEnd(player.rank);
+        Player.updateJetsAtEnd(player.rank);
         player.update();
         this.showRank();
       }
@@ -192,7 +190,7 @@ class Game {
         playerCount: 0,
         gameState: 0,
         players: {},
-        carsAtEnd: 0
+        jetsAtEnd: 0
       });
       window.location.reload();
     });
@@ -299,7 +297,7 @@ class Game {
 
   handleFuel(index) {
     // Adding fuel
-    cars[index - 1].overlap(fuels, function(collector, collected) {
+  jets[index - 1].overlap(fuels, function(collector, collected) {
       player.fuel = 185;
       //collected is the sprite in the group collectibles that triggered
       //the event
@@ -319,7 +317,7 @@ class Game {
   }
 
   handlePowerCoins(index) {
-    cars[index - 1].overlap(powerCoins, function(collector, collected) {
+    jets[index - 1].overlap(powerCoins, function(collector, collected) {
       player.score += 21;
       player.update();
       //collected is the sprite in the group collectibles that triggered
@@ -329,7 +327,7 @@ class Game {
   }
 
   handleObstacleCollision(index) {
-    if (cars[index - 1].collide(obstacles)) {
+    if (jets[index - 1].collide(obstacles)) {
       if (this.leftKeyActive) {
         player.positionX += 100;
         rect(12,20,20,90);
